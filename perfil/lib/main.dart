@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:perfil/presentation/bloc/bloc.dart';
 
 
+
+import 'presentation/bloc/homeState.dart';
 import 'presentation/view/cargando.dart';
 import 'presentation/view/failure.dart';
+import 'presentation/view/init.dart';
 
 void main(){
   runApp(App());
@@ -13,46 +18,24 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 187, 208, 224),
-        body: Center(
-         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("Bienvenido",
-              style: TextStyle(
-                fontSize: 46,
-                color: Colors.white,
-                shadows: [
-                  Shadow(
-                  offset: Offset(2, 2),
-                  blurRadius: 3,
-                  color: const Color.fromARGB(255, 100, 96, 96)
-                )]
-              ),
-            ),
-            SizedBox(height: 20),
-            Icon(
-                Icons.waving_hand,
-                size: 100,
-                color: Colors.blue,
-              ),
-            SizedBox(height: 30),
-
-            ElevatedButton(
-              onPressed: () {
-                print('Botón presionado');
-              },
-              child: Text('Empezar'),
-            )
-          ],
-         ),
-        ),
+    return BlocProvider(
+      create: (context) => HomeBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is Cargando) {
+              return Loading();
+            } else if(state is Error){
+              return Failure();
+            } else if(state is Success){
+              return Text("Salio bien");
+            }else{
+              return Initial();
+            }
+          },
+        )
       ),
-    );
+      );
   }
 }
