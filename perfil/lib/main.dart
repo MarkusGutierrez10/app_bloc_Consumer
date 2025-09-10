@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:perfil/presentation/bloc/bloc.dart';
+import 'package:perfil/presentation/bloc/homeState.dart';
 
-
-
-import 'presentation/bloc/homeState.dart';
 import 'presentation/view/cargando.dart';
 import 'presentation/view/failure.dart';
 import 'presentation/view/init.dart';
+import 'presentation/view/success.dart';
 
-void main(){
-  runApp(App());
+void main() {
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
@@ -22,20 +21,30 @@ class App extends StatelessWidget {
       create: (context) => HomeBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is Cargando) {
-              return Loading();
-            } else if(state is Error){
-              return Failure();
-            } else if(state is Success){
-              return Text("Salio bien");
-            }else{
-              return Initial();
+        home: BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state is Correcto) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>  Success(),
+                ),
+              );
             }
           },
-        )
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is Cargando) {
+                return const Loading();
+              } else if (state is Error) {
+                return const Failure();
+              } else {
+                return const Initial();
+              }
+            },
+          ),
+        ),
       ),
-      );
+    );
   }
 }

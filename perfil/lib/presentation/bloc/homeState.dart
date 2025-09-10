@@ -9,6 +9,6 @@ sealed class HomeState extends Equatable {
 
 class Inicio extends HomeState{}
 class Cargando extends HomeState{}
-class Success extends HomeState{}
+class Correcto extends HomeState{}
 class Error extends HomeState{}
 

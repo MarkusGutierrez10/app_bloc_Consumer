@@ -13,9 +13,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState>{
   on<HomeSearchPressed>((event, emit) async{
     emit(Cargando());
     final url = Uri.parse("https://raw.githubusercontent.com/MarkusGutierrez10/json/refs/heads/main/initial");
-    final respuesta = await http.get(url);
+    http.Response respuesta = await http.get(url);
     if (respuesta.statusCode == 200) {
-      emit(Success());
+      emit(Correcto());
     }else{
       emit(Error());
     }
