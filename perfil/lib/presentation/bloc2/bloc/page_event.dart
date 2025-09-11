@@ -8,3 +8,4 @@ sealed class PageBlocEvent extends Equatable {
 }
 
 class HomeSearchPressed extends PageBlocEvent{}
+

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:perfil/presentation/model/datos.dart';
+
 import '../bloc2/bloc/page_bloc_bloc.dart';
-import 'package:perfil/presentation/view/cargando.dart';
-import 'package:perfil/presentation/view/failure.dart';
+import '../bloc2/bloc/page_bloc_state.dart';
+import '../bloc2/bloc/page_event.dart';
+import '../model/datos.dart';
+import 'cargando.dart';
+import 'failure.dart';
 
 class SuccesDatos extends StatelessWidget {
   const SuccesDatos({super.key});
@@ -11,74 +14,89 @@ class SuccesDatos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => PageBlocBloc(), // Lanzar evento al crear
+      create: (context) => PageBlocBloc()..add(HomeSearchPressed()),
       child: Scaffold(
+        backgroundColor: Colors.grey[200],
         body: Center(
-          child: Card(
-            color: const Color.fromARGB(255, 132, 142, 151),
-            elevation: 4,
-            margin: const EdgeInsets.all(20),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(60),
-                    child: Image.asset(
-                      "assets/perfil.png",
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.cover,
+          child: BlocBuilder<PageBlocBloc, PageBlocState>(
+            builder: (context, state) {
+              if (state is PageLoading) {
+                return Loading();
+              } else if (state is PageSuccess) {
+                final Datos datos = state.datos;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage("assets/perfil.png"),
+                      backgroundColor: Colors.grey[300],
                     ),
-                  ),
-                  const SizedBox(height: 20),
+                    SizedBox(height: 20),
 
-                  // BlocBuilder SOLO alrededor del contenido que cambia
-                  BlocBuilder<PageBlocBloc, PageBlocState>(
-                    builder: (context, state) {
-                      if (state is PageLoading) {
-                        return const Loading();
-                      } else if (state is PageSuccess) {
-                        final Datos datos = state.datos;
-                        return SizedBox(
-                          width: 250,
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${datos.nombre}",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    "${datos.correo}",
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text("${datos.telefono}"),
-                                ],
+                    Card(
+                      elevation: 10,
+                      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 116, 120, 143),
+                              Colors.red.shade200
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.person, color: Colors.white),
+                              title: Text(
+                                "${datos.nombre}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: const Text(
+                                "Usuario Premium",
+                                style: TextStyle(color: Colors.white70),
                               ),
                             ),
-                          ),
-                        );
-                      } else if (state is PageFailure) {
-                        return Failure();
-                      } else {
-                        return SizedBox(); // Estado inicial u otros
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
+                            Divider(color: Colors.white54, thickness: 1),
+                            ListTile(
+                              leading: const Icon(Icons.email, color: Colors.white),
+                              title: Text(
+                                "${datos.correo}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.phone, color: Colors.white),
+                              title: Text(
+                                "${datos.telefono}",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Failure(); 
+              }
+            },
           ),
         ),
       ),
