@@ -1,4 +1,5 @@
-part of 'page_bloc_bloc.dart';
+import 'package:equatable/equatable.dart';
+import '../../model/datos.dart';
 
 sealed class PageBlocState extends Equatable {
   const PageBlocState();

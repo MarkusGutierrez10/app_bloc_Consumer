@@ -9,7 +9,7 @@ import 'presentation/view/init.dart';
 import 'presentation/view/success.dart';
 
 void main() {
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
@@ -34,9 +34,9 @@ class App extends StatelessWidget {
             if (state is Cargando) {
               return const Loading();
             } else if (state is Error) {
-              return const Failure();
+              return Failure();
             } else {
-              return const Initial();
+              return Initial();
             }
           },
         ),

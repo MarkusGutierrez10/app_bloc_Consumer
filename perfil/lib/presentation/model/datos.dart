@@ -1,7 +1,7 @@
 class Datos{
   String? nombre;
   String? correo;
-  int? telefono;
+  String? telefono;
   
   Datos(Map map){
     nombre = map['nombre'];
