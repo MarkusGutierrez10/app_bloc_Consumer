@@ -4,8 +4,8 @@ class Datos{
   int? telefono;
   
   Datos(Map map){
-    this.nombre = map['nombre'];
-    this.correo = map['correo'];
-    this.telefono = map['telefono'];
+    nombre = map['nombre'];
+    correo = map['correo'];
+    telefono = map['telefono'];
   }
 }

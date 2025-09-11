@@ -21,28 +21,24 @@ class App extends StatelessWidget {
       create: (context) => HomeBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: BlocListener<HomeBloc, HomeState>(
+        home: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
             if (state is Correcto) {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) =>  Success(),
-                ),
+                MaterialPageRoute(builder: (_) => Home()),
               );
             }
           },
-          child: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, state) {
-              if (state is Cargando) {
-                return const Loading();
-              } else if (state is Error) {
-                return const Failure();
-              } else {
-                return const Initial();
-              }
-            },
-          ),
+          builder: (context, state) {
+            if (state is Cargando) {
+              return const Loading();
+            } else if (state is Error) {
+              return const Failure();
+            } else {
+              return const Initial();
+            }
+          },
         ),
       ),
     );
