@@ -28,8 +28,8 @@ class SuccesDatos extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage("assets/perfil.png"),
+                      radius: 100,
+                      backgroundImage: AssetImage("assets/markus.jpeg"),
                       backgroundColor: Colors.grey[300],
                     ),
                     SizedBox(height: 20),
