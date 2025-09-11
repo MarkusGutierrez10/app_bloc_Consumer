@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:perfil/presentation/model/datos.dart';
 
-import 'SuccessDatos.dart';
+import 'datosSuccess.dart';
 
-class Success extends StatelessWidget {
+
+class Home extends StatelessWidget {
   
-  Success({
-    super.key
-  });
+  
 
 
   @override
