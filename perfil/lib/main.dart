@@ -5,8 +5,8 @@ import 'package:perfil/presentation/bloc/homeState.dart';
 
 import 'presentation/view/cargando.dart';
 import 'presentation/view/failure.dart';
+import 'presentation/view/home.dart';
 import 'presentation/view/init.dart';
-import 'presentation/view/success.dart';
 
 void main() {
   runApp(App());
@@ -17,11 +17,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: BlocConsumer<HomeBloc, HomeState>(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: BlocProvider(
+        create: (context) => HomeBloc(),
+        child: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
             if (state is Correcto) {
               Navigator.push(

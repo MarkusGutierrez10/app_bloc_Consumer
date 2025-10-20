@@ -1,26 +1,37 @@
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 
 
 import 'homeEvent.dart';
 import 'homeState.dart';
 
+
 class HomeBloc extends Bloc<HomeEvent, HomeState>{
   HomeBloc() : super(Inicio()) {
 
   on<HomeSearchPressed>((event, emit) async{
-    emit(Cargando());
-    final url = Uri.parse("https://raw.githubusercontent.com/MarkusGutierrez10/json/refs/heads/main/initial");
-    http.Response respuesta = await http.get(url);
-    if (respuesta.statusCode == 200) {
-      emit(Correcto());
-    }else{
-      emit(Error());
-    }
 
+      final dio = Dio();
+      final url = "https://jsonplaceholder.typicode.com/posts";
 
-  });
+      try {
+        final response = await dio.post(
+          url,
+          data: {"usuario": event.user, "contrasena": event.pass},
+          options: Options(headers: {"Content-Type": "application/json"}),
+        );
+
+        emit(Cargando());
+        if (response.statusCode == 201) {
+          await Future.delayed(Duration(seconds: 5));
+          emit(Correcto());
+        } else {
+          emit(Error());
+        }
+      } catch (e) {
+        emit(Error());
+      }
+    });
   }
-  
 }

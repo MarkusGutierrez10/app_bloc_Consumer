@@ -17,11 +17,8 @@ class PageBlocBloc extends Bloc<PageBlocEvent, PageBlocState> {
 
         if (response.statusCode == 200){
           Map objectMap = jsonDecode(response.body);
-          print("entro la peticion");
-          print(objectMap);
-          print("{}");
           Datos datos = Datos(objectMap);
-          print(datos);
+          await Future.delayed(Duration(seconds: 5));
           emit(PageSuccess(datos));
         }else{
           emit(PageFailure());
